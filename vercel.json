@@ -1,0 +1,5 @@
+{
+  "rewrites": [
+    { "source": "/", "destination": "/exercise01_colab.html" }
+  ]
+}
