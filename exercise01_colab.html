@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Web構築 演習問題 1（Google Colab版）</title>
+  <style>
+    :root {
+      --primary: #1DB954;
+      --bg-dark: #1a1a2e;
+      --bg-card: #16213e;
+      --bg-code: #0f0f23;
+      --text: #e0e0e0;
+      --text-muted: #a0a0b0;
+      --accent: #f39c12;
+      --border: #2a2a4a;
+      --colab-orange: #F9AB00;
+      --colab-blue: #4285F4;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', 'Noto Sans JP', sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text);
+      line-height: 1.8;
+    }
+
+    /* ── Header ── */
+    .header {
+      background: linear-gradient(135deg, #0f3460 0%, #1a1a2e 50%, #16213e 100%);
+      padding: 40px 20px;
+      text-align: center;
+      border-bottom: 3px solid var(--primary);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .header::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at 30% 50%, rgba(29, 185, 84, 0.08) 0%, transparent 50%),
+                  radial-gradient(circle at 70% 50%, rgba(66, 133, 244, 0.08) 0%, transparent 50%);
+      animation: bgShift 15s ease-in-out infinite;
+    }
+
+    @keyframes bgShift {
+      0%, 100% { transform: translate(0, 0); }
+      50% { transform: translate(-5%, 3%); }
+    }
+
+    .header-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .header h1 {
+      font-size: 2rem;
+      margin-bottom: 6px;
+      letter-spacing: 0.05em;
+    }
+
+    .header h1 ruby rt {
+      font-size: 0.45em;
+      color: var(--text-muted);
+    }
+
+    .header .subtitle {
+      display: inline-block;
+      background: linear-gradient(90deg, var(--colab-orange), var(--colab-blue));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-size: 1rem;
+      font-weight: 600;
+      margin-top: 4px;
+    }
+
+    /* ── Info bar ── */
+    .info-bar {
+      max-width: 900px;
+      margin: 30px auto 0;
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      justify-content: center;
+      padding: 0 20px;
+    }
+
+    .info-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 22px;
+      font-size: 0.95rem;
+    }
+
+    .info-item span {
+      color: var(--text-muted);
+      margin-right: 6px;
+    }
+
+    /* ── Container ── */
+    .container {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 30px 20px 60px;
+    }
+
+    /* ── Section ── */
+    .section {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 28px 30px;
+      margin-bottom: 28px;
+    }
+
+    .section-number {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      background: var(--primary);
+      color: #fff;
+      border-radius: 50%;
+      font-weight: 700;
+      font-size: 0.95rem;
+      margin-right: 10px;
+      flex-shrink: 0;
+    }
+
+    .section h2 {
+      display: flex;
+      align-items: center;
+      font-size: 1.25rem;
+      margin-bottom: 18px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--border);
+    }
+
+    .section h2 ruby rt {
+      font-size: 0.5em;
+      color: var(--text-muted);
+    }
+
+    /* ── Steps ── */
+    .steps {
+      counter-reset: step;
+      list-style: none;
+      padding: 0;
+    }
+
+    .steps li {
+      counter-increment: step;
+      position: relative;
+      padding: 12px 0 12px 48px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .steps li:last-child {
+      border-bottom: none;
+    }
+
+    .steps li::before {
+      content: counter(step);
+      position: absolute;
+      left: 0;
+      top: 12px;
+      width: 30px;
+      height: 30px;
+      background: rgba(29, 185, 84, 0.15);
+      color: var(--primary);
+      border: 1px solid rgba(29, 185, 84, 0.3);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.85rem;
+    }
+
+    /* ── Table ── */
+    .q-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    .q-table th,
+    .q-table td {
+      padding: 12px 16px;
+      border: 1px solid var(--border);
+      text-align: left;
+    }
+
+    .q-table th {
+      background: rgba(29, 185, 84, 0.12);
+      color: var(--primary);
+      font-size: 0.9rem;
+      white-space: nowrap;
+    }
+
+    .q-table td:first-child {
+      text-align: center;
+      font-weight: 700;
+      width: 70px;
+      white-space: nowrap;
+    }
+
+    .q-table tr:hover {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .q-table ruby rt {
+      font-size: 0.6em;
+      color: var(--text-muted);
+    }
+
+    /* ── Code block ── */
+    .code-block {
+      background: var(--bg-code);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-top: 14px;
+    }
+
+    .code-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(255, 255, 255, 0.04);
+      padding: 8px 16px;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    .code-header .cell-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-weight: 600;
+    }
+
+    .code-header .cell-badge .icon {
+      display: inline-block;
+      width: 18px;
+      height: 18px;
+      border-radius: 4px;
+      text-align: center;
+      line-height: 18px;
+      font-size: 0.7rem;
+      font-weight: 700;
+    }
+
+    .code-header .cell-badge .icon.play {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .copy-btn {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: var(--text-muted);
+      padding: 4px 14px;
+      border-radius: 6px;
+      font-size: 0.78rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .copy-btn:hover {
+      background: rgba(255, 255, 255, 0.15);
+      color: #fff;
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+
+    .copy-btn.copied {
+      background: rgba(29, 185, 84, 0.2);
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    .code-body {
+      padding: 18px 22px;
+      overflow-x: auto;
+    }
+
+    .code-body pre {
+      font-family: 'Consolas', 'Courier New', monospace;
+      font-size: 0.88rem;
+      line-height: 1.7;
+      white-space: pre;
+      color: #c8d0dc;
+    }
+
+    /* ── Blanks ── */
+    .blank {
+      display: inline-block;
+      background: linear-gradient(135deg, rgba(243, 156, 18, 0.25), rgba(243, 156, 18, 0.15));
+      border: 1.5px solid var(--accent);
+      border-radius: 5px;
+      padding: 1px 14px;
+      color: var(--accent);
+      font-weight: 700;
+      font-size: 0.88rem;
+      min-width: 60px;
+      text-align: center;
+    }
+
+    /* ── Completion image ── */
+    .preview-frame {
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-top: 14px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .preview-bar {
+      background: #2d2d2d;
+      padding: 8px 16px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .preview-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    .preview-dot.r { background: #ff5f57; }
+    .preview-dot.y { background: #febc2e; }
+    .preview-dot.g { background: #28c840; }
+
+    .preview-body {
+      position: relative;
+      width: 100%;
+      height: 0;
+      padding-bottom: 52%;
+      background: url('https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=800') center/cover no-repeat;
+    }
+
+    .preview-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .preview-nav {
+      background: rgba(0, 0, 0, 0.7);
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      color: #fff;
+      font-family: Arial, sans-serif;
+    }
+
+    .preview-nav .p-logo {
+      color: #1DB954;
+      font-size: 1.15rem;
+      font-weight: bold;
+    }
+
+    .preview-nav a {
+      color: #fff;
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+
+    .preview-main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .preview-main h3 {
+      font-size: 2rem;
+      margin-bottom: 10px;
+    }
+
+    .preview-main hr {
+      width: 80%;
+      border: none;
+      border-top: 1px solid rgba(255, 255, 255, 0.4);
+      margin-bottom: 10px;
+    }
+
+    .preview-main .desc {
+      font-size: 1rem;
+      margin-bottom: 16px;
+      opacity: 0.9;
+    }
+
+    .preview-main .btn {
+      display: inline-block;
+      background: #1DB954;
+      color: #fff;
+      border: none;
+      border-radius: 25px;
+      padding: 10px 32px;
+      font-size: 0.95rem;
+      font-weight: bold;
+    }
+
+    /* ── URL box ── */
+    .url-box {
+      background: var(--bg-code);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 18px;
+      font-family: 'Consolas', 'Courier New', monospace;
+      font-size: 0.88rem;
+      word-break: break-all;
+      color: #7ec8e3;
+      margin-top: 10px;
+      user-select: all;
+    }
+
+    /* ── Tip box ── */
+    .tip-box {
+      background: rgba(66, 133, 244, 0.08);
+      border: 1px solid rgba(66, 133, 244, 0.25);
+      border-left: 4px solid var(--colab-blue);
+      border-radius: 6px;
+      padding: 14px 18px;
+      margin-top: 16px;
+      font-size: 0.92rem;
+      color: #b0c4e8;
+    }
+
+    .tip-box strong {
+      color: var(--colab-blue);
+    }
+
+    /* ── Warning box ── */
+    .warn-box {
+      background: rgba(243, 156, 18, 0.08);
+      border: 1px solid rgba(243, 156, 18, 0.25);
+      border-left: 4px solid var(--accent);
+      border-radius: 6px;
+      padding: 14px 18px;
+      margin-top: 16px;
+      font-size: 0.92rem;
+      color: #e8d0a0;
+    }
+
+    .warn-box strong {
+      color: var(--accent);
+    }
+
+    /* ── Comment in code ── */
+    .cm { color: #6a7a8a; }
+    .kw { color: #c678dd; }
+    .fn { color: #61afef; }
+    .st { color: #98c379; }
+    .tag { color: #e06c75; }
+    .attr { color: #d19a66; }
+    .val { color: #98c379; }
+    .css-prop { color: #56b6c2; }
+    .css-val { color: #d19a66; }
+    .punct { color: #abb2bf; }
+
+    /* ── Responsive ── */
+    @media (max-width: 640px) {
+      .header h1 { font-size: 1.4rem; }
+      .section { padding: 20px 16px; }
+      .code-body { padding: 14px 12px; }
+      .code-body pre { font-size: 0.78rem; }
+      .q-table th, .q-table td { padding: 8px 10px; font-size: 0.88rem; }
+      .info-bar { flex-direction: column; align-items: center; }
+      .preview-main h3 { font-size: 1.3rem; }
+    }
+
+    /* ── Print ── */
+    @media print {
+      body { background: #fff; color: #000; }
+      .section { border-color: #ccc; background: #fff; }
+      .blank { border-color: #e67e22; background: rgba(243, 156, 18, 0.1); }
+      .code-block { border-color: #ccc; background: #f5f5f5; }
+      .code-body pre { color: #333; }
+      .header { background: #f0f0f0; border-bottom-color: #1DB954; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ========== Header ========== -->
+  <header class="header">
+    <div class="header-content">
+      <h1><ruby>Web構築<rt>こうちく</rt></ruby>　<ruby>演習<rt>えんしゅう</rt></ruby> <ruby>問題<rt>もんだい</rt></ruby> 1</h1>
+      <div class="subtitle">Google Colab 版</div>
+    </div>
+  </header>
+
+  <div class="info-bar">
+    <div class="info-item"><span><ruby>学籍番号<rt>がくせきばんごう</rt></ruby>：</span></div>
+    <div class="info-item"><span><ruby>氏名<rt>しめい</rt></ruby>：</span></div>
+    <div class="info-item"><span><ruby>日付<rt>ひづけ</rt></ruby>：</span>　<ruby>月<rt>がつ</rt></ruby>　　<ruby>日<rt>にち</rt></ruby></div>
+  </div>
+
+  <div class="container">
+
+    <!-- ===== 1. 問題の説明 ===== -->
+    <section class="section">
+      <h2>
+        <span class="section-number">1</span>
+        <ruby>問題<rt>もんだい</rt></ruby>の<ruby>説明<rt>せつめい</rt></ruby>
+      </h2>
+      <p>
+        Google Colab で <strong>「Music Stream」</strong> の Web ページを <code>IPython.display</code> の <code>HTML</code> を<ruby>使<rt>つか</rt></ruby>って<ruby>表示<rt>ひょうじ</rt></ruby>させます。<br>
+        まず<strong>サンプルコード</strong>を<ruby>実行<rt>じっこう</rt></ruby>して <code>IPython.display</code> の<ruby>使<rt>つか</rt></ruby>い<ruby>方<rt>かた</rt></ruby>を<ruby>確認<rt>かくにん</rt></ruby>し、
+        その<ruby>後<rt>あと</rt></ruby>、コードの
+        <span class="blank">(1)</span> ～ <span class="blank">(10)</span>
+        に<ruby>入<rt>はい</rt></ruby>る<ruby>正<rt>ただ</rt></ruby>しい<ruby>言葉<rt>ことば</rt></ruby>を<ruby>書<rt>か</rt></ruby>いて、プログラムを<ruby>完成<rt>かんせい</rt></ruby>させてください。
+      </p>
+    </section>
+
+    <!-- ===== 2. 提出方法 ===== -->
+    <section class="section">
+      <h2>
+        <span class="section-number">2</span>
+        <ruby>提出<rt>ていしゅつ</rt></ruby> <ruby>方法<rt>ほうほう</rt></ruby>
+      </h2>
+      <ol class="steps">
+        <li>
+          Google Colab（<a href="https://colab.research.google.com/" target="_blank" style="color: var(--colab-blue);">colab.research.google.com</a>）を<ruby>開<rt>ひら</rt></ruby>き、<strong>「ノートブックを<ruby>新規作成<rt>しんきさくせい</rt></ruby>」</strong>をクリックする
+        </li>
+        <li>
+          <strong>セル 1</strong> に「<ruby>手順<rt>てじゅん</rt></ruby> 3 ── サンプルコード」をコピーして<ruby>実行<rt>じっこう</rt></ruby>し、<code>IPython.display</code> の<ruby>使<rt>つか</rt></ruby>い<ruby>方<rt>かた</rt></ruby>を<ruby>確認<rt>かくにん</rt></ruby>する
+        </li>
+        <li>
+          <strong>セル 2</strong>（<ruby>新<rt>あたら</rt></ruby>しいセルを<ruby>追加<rt>ついか</rt></ruby>）に「<ruby>手順<rt>てじゅん</rt></ruby> 5 ── <ruby>穴埋<rt>あなう</rt></ruby>めコード」をコピーし、<span class="blank">(1)</span>～<span class="blank">(10)</span> の<ruby>空欄<rt>くうらん</rt></ruby>を<ruby>埋<rt>う</rt></ruby>めて<ruby>実行<rt>じっこう</rt></ruby>する
+        </li>
+        <li>
+          <ruby>完成<rt>かんせい</rt></ruby>イメージと<ruby>同<rt>おな</rt></ruby>じ<ruby>表示<rt>ひょうじ</rt></ruby>になったら、メニューから<br>
+          <strong>「ファイル」→「.ipynb をダウンロード」</strong> をクリックする
+        </li>
+        <li>
+          ダウンロードした <code>.ipynb</code> ファイルの<ruby>名前<rt>なまえ</rt></ruby>を<br>
+          <strong style="color: var(--accent);">Web-<ruby>学籍番号<rt>がくせきばんごう</rt></ruby>.ipynb</strong>　に<ruby>変更<rt>へんこう</rt></ruby>する<br>
+          （<ruby>例<rt>れい</rt></ruby>：<code>Web-12345.ipynb</code>）
+        </li>
+        <li>
+          <ruby>名前<rt>なまえ</rt></ruby>を<ruby>変更<rt>へんこう</rt></ruby>した <code>.ipynb</code> ファイルを Gmail で<ruby>件名<rt>けんめい</rt></ruby>：<strong>Web<ruby>回答<rt>かいとう</rt></ruby></strong> として <strong>y.mizuhiki@noutatsu.ac.jp</strong> へ<ruby>提出<rt>ていしゅつ</rt></ruby>する
+        </li>
+      </ol>
+
+      <div class="tip-box">
+        <strong>Tip：</strong>Colab でセルを<ruby>追加<rt>ついか</rt></ruby>するには、セルの<ruby>下<rt>した</rt></ruby>にある <strong>「+ コード」</strong> ボタンをクリックします。
+      </div>
+    </section>
+
+    <!-- ===== 3. サンプルコード ===== -->
+    <section class="section">
+      <h2>
+        <span class="section-number">3</span>
+        サンプルコード（<ruby>手順<rt>てじゅん</rt></ruby> 2 で<ruby>使用<rt>しよう</rt></ruby>）
+      </h2>
+      <p style="margin-bottom: 12px;">
+        まず<ruby>下<rt>した</rt></ruby>のコードを <strong>セル 1</strong> にコピー &amp; ペーストして<ruby>実行<rt>じっこう</rt></ruby>してください。<br>
+        <code>IPython.display.HTML</code> を<ruby>使<rt>つか</rt></ruby>うと、Colab のセル<ruby>内<rt>ない</rt></ruby>で HTML/CSS を<ruby>表示<rt>ひょうじ</rt></ruby>できることを<ruby>確認<rt>かくにん</rt></ruby>します。
+      </p>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span class="cell-badge"><span class="icon play">&#9654;</span> セル 1 ── サンプル</span>
+          <button class="copy-btn" data-target="cell1-code" onclick="copyCode(this)">&#128203; Copy</button>
+        </div>
+        <div class="code-body"><pre><span class="kw">from</span> IPython.display <span class="kw">import</span> display, HTML
+
+<span class="cm"># HTML と CSS を文字列で書く</span>
+sample_html = <span class="st">"""
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;style&gt;
+    .sample-box {
+      background-color: #1DB954;
+      color: white;
+      padding: 30px;
+      text-align: center;
+      border-radius: 12px;
+      font-family: Arial, sans-serif;
+    }
+    .sample-box h1 {
+      font-size: 28px;
+    }
+    .sample-box p {
+      font-size: 16px;
+      margin-top: 10px;
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div class="sample-box"&gt;
+    &lt;h1&gt;Hello, Colab!&lt;/h1&gt;
+    &lt;p&gt;IPython.display を使うと HTML を表示できます&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+"""</span>
+
+<span class="cm"># HTML を表示する</span>
+display(HTML(sample_html))</pre>
+        </div>
+      </div>
+
+      <div class="tip-box">
+        <strong>Tip：</strong><ruby>実行<rt>じっこう</rt></ruby>すると、セルの<ruby>下<rt>した</rt></ruby>に<ruby>緑<rt>みどり</rt></ruby>のボックスと「Hello, Colab!」が<ruby>表示<rt>ひょうじ</rt></ruby>されます。これが <code>IPython.display</code> の<ruby>基本<rt>きほん</rt></ruby>です。
+      </div>
+    </section>
+
+    <!-- ===== 4. 使用する画像URL ===== -->
+    <section class="section">
+      <h2>
+        <span class="section-number">4</span>
+        <ruby>使用<rt>しよう</rt></ruby>する<ruby>画像<rt>がぞう</rt></ruby> URL
+      </h2>
+      <div class="url-box">https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=800</div>
+    </section>
+
+    <!-- ===== 5. 問題 ===== -->
+    <section class="section">
+      <h2>
+        <span class="section-number">5</span>
+        <ruby>問題<rt>もんだい</rt></ruby>
+      </h2>
+      <table class="q-table">
+        <thead>
+          <tr>
+            <th><ruby>番号<rt>ばんごう</rt></ruby></th>
+            <th><ruby>問題<rt>もんだい</rt></ruby> <ruby>内容<rt>ないよう</rt></ruby></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>(1)</td>
+            <td>body に<ruby>背景<rt>はいけい</rt></ruby><ruby>画像<rt>がぞう</rt></ruby>を<ruby>設定<rt>せってい</rt></ruby>する CSS プロパティを<ruby>書<rt>か</rt></ruby>いてください</td>
+          </tr>
+          <tr>
+            <td>(2)</td>
+            <td>「4. <ruby>使用<rt>しよう</rt></ruby>する<ruby>画像<rt>がぞう</rt></ruby> URL」の URL を<ruby>書<rt>か</rt></ruby>いてください</td>
+          </tr>
+          <tr>
+            <td>(3)</td>
+            <td>body の color に「<ruby>白<rt>しろ</rt></ruby>」を<ruby>設定<rt>せってい</rt></ruby>してください</td>
+          </tr>
+          <tr>
+            <td>(4)</td>
+            <td>navbar の background-color に<ruby>半透明<rt>はんとうめい</rt></ruby>の<ruby>色<rt>いろ</rt></ruby>を<ruby>設定<rt>せってい</rt></ruby>する<ruby>関数<rt>かんすう</rt></ruby>を<ruby>書<rt>か</rt></ruby>いてください</td>
+          </tr>
+          <tr>
+            <td>(5)</td>
+            <td>logo の font-weight に「<ruby>太字<rt>ふとじ</rt></ruby>」を<ruby>設定<rt>せってい</rt></ruby>してください</td>
+          </tr>
+          <tr>
+            <td>(6)</td>
+            <td>main-content の text-align に「<ruby>中央<rt>ちゅうおう</rt></ruby>」を<ruby>設定<rt>せってい</rt></ruby>してください</td>
+          </tr>
+          <tr>
+            <td>(7)</td>
+            <td>button の border を「なし」に<ruby>設定<rt>せってい</rt></ruby>してください</td>
+          </tr>
+          <tr>
+            <td>(8)</td>
+            <td>button の border-radius に「25px」を<ruby>設定<rt>せってい</rt></ruby>してください</td>
+          </tr>
+          <tr>
+            <td>(9)</td>
+            <td>link を<ruby>作<rt>つく</rt></ruby>る HTML タグを<ruby>書<rt>か</rt></ruby>いてください</td>
+          </tr>
+          <tr>
+            <td>(10)</td>
+            <td>paragraph を<ruby>作<rt>つく</rt></ruby>る HTML タグを<ruby>書<rt>か</rt></ruby>いてください</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ===== 6. 穴埋めコード ===== -->
+    <section class="section">
+      <h2>
+        <span class="section-number">6</span>
+        <ruby>穴埋<rt>あなう</rt></ruby>めコード（<ruby>手順<rt>てじゅん</rt></ruby> 3 で<ruby>使用<rt>しよう</rt></ruby>）
+      </h2>
+      <p style="margin-bottom: 12px;">
+        <ruby>下<rt>した</rt></ruby>のコードを <strong>セル 2</strong> にコピー＆ペーストし、<span class="blank">(1)</span>～<span class="blank">(10)</span> の<ruby>空欄<rt>くうらん</rt></ruby>を<ruby>埋<rt>う</rt></ruby>めてから<ruby>実行<rt>じっこう</rt></ruby>してください。
+      </p>
+
+      <div class="warn-box">
+        <strong><ruby>注意<rt>ちゅうい</rt></ruby>：</strong>コードをコピーするとき、<span class="blank">(1)</span> などの<ruby>部分<rt>ぶぶん</rt></ruby>はそのまま<ruby>残<rt>のこ</rt></ruby>っています。<ruby>正<rt>ただ</rt></ruby>しい<ruby>答<rt>こた</rt></ruby>えに<ruby>書<rt>か</rt></ruby>き<ruby>換<rt>か</rt></ruby>えてください。
+      </div>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span class="cell-badge"><span class="icon play">&#9654;</span> セル 2 ── <ruby>穴埋<rt>あなう</rt></ruby>め</span>
+          <button class="copy-btn" data-target="cell2-code" onclick="copyCode(this)">&#128203; Copy</button>
+        </div>
+        <div class="code-body"><pre><span class="kw">from</span> IPython.display <span class="kw">import</span> display, HTML
+
+music_html = <span class="st">"""
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;style&gt;
+    body {
+      margin: 0;
+      <span class="blank">(1)</span>: url("<span class="blank">(2)</span>");
+      background-size: cover;
+      background-repeat: no-repeat;
+      color: <span class="blank">(3)</span>;
+      font-family: Arial, sans-serif;
+    }
+    .navbar {
+      background-color: <span class="blank">(4)</span>(0,0,0,0.7);
+      padding: 15px 30px;
+    }
+    .logo {
+      color: #1DB954;
+      font-size: 24px;
+      font-weight: <span class="blank">(5)</span>;
+    }
+    .navbar a {
+      color: white;
+      text-decoration: none;
+      margin-left: 20px;
+    }
+    .main-content {
+      text-align: <span class="blank">(6)</span>;
+      padding: 100px 20px;
+    }
+    h1 {
+      font-size: 48px;
+      margin-bottom: 20px;
+    }
+    p {
+      font-size: 20px;
+      margin-bottom: 30px;
+    }
+    button {
+      background-color: #1DB954;
+      color: white;
+      border: <span class="blank">(7)</span>;
+      border-radius: <span class="blank">(8)</span>;
+      padding: 15px 40px;
+      font-size: 16px;
+      font-weight: bold;
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div class="navbar"&gt;
+    &lt;span class="logo"&gt;MusicStream&lt;/span&gt;
+    &lt;<span class="blank">(9)</span> href="#"&gt;Home&lt;/<span class="blank">(9)</span>&gt;
+    &lt;a href="#"&gt;Premium&lt;/a&gt;
+  &lt;/div&gt;
+  &lt;div class="main-content"&gt;
+    &lt;h1&gt;Music for everyone.&lt;/h1&gt;
+    &lt;<span class="blank">(10)</span>&gt;Millions of songs. No credit card needed.&lt;/<span class="blank">(10)</span>&gt;
+    &lt;button&gt;Get Started&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+"""</span>
+
+<span class="cm"># HTML を表示する</span>
+display(HTML(music_html))</pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 7. 完成イメージ ===== -->
+    <section class="section">
+      <h2 style="justify-content: space-between; flex-wrap: wrap;">
+        <span style="display:inline-flex; align-items:center;">
+          <span class="section-number">7</span>
+          <ruby>完成<rt>かんせい</rt></ruby>イメージ
+        </span>
+        <a href="answer01.html" class="copy-btn" style="text-decoration:none; font-size:0.85rem; font-weight:600;">&#128209; 回答参照</a>
+      </h2>
+      <p style="margin-bottom:12px"><ruby>穴埋<rt>あなう</rt></ruby>めが<ruby>正<rt>ただ</rt></ruby>しくできると、<ruby>下<rt>した</rt></ruby>のような<ruby>表示<rt>ひょうじ</rt></ruby>になります。</p>
+      <div class="preview-frame">
+        <div class="preview-bar">
+          <span class="preview-dot r"></span>
+          <span class="preview-dot y"></span>
+          <span class="preview-dot g"></span>
+        </div>
+        <div class="preview-body">
+          <div class="preview-overlay">
+            <div class="preview-nav">
+              <span class="p-logo">MusicStream</span>
+              <a href="#">Home</a>
+              <a href="#">Premium</a>
+            </div>
+            <div class="preview-main">
+              <h3>Music for everyone.</h3>
+              <hr>
+              <p class="desc">Millions of songs. No credit card needed.</p>
+              <span class="btn">Get Started</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 8. 提出前チェック ===== -->
+    <section class="section">
+      <h2>
+        <span class="section-number">8</span>
+        <ruby>提出前<rt>ていしゅつまえ</rt></ruby>チェックリスト
+      </h2>
+      <table class="q-table">
+        <thead>
+          <tr>
+            <th style="width:50px;">&#9744;</th>
+            <th><ruby>確認<rt>かくにん</rt></ruby><ruby>内容<rt>ないよう</rt></ruby></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>&#9744;</td>
+            <td>セル 1（サンプル）を<ruby>実行<rt>じっこう</rt></ruby>して、「Hello, Colab!」が<ruby>表示<rt>ひょうじ</rt></ruby>された</td>
+          </tr>
+          <tr>
+            <td>&#9744;</td>
+            <td>セル 2 の <span class="blank">(1)</span>～<span class="blank">(10)</span> をすべて<ruby>埋<rt>う</rt></ruby>めた</td>
+          </tr>
+          <tr>
+            <td>&#9744;</td>
+            <td>セル 2 を<ruby>実行<rt>じっこう</rt></ruby>して、<ruby>完成<rt>かんせい</rt></ruby>イメージと<ruby>同<rt>おな</rt></ruby>じ<ruby>表示<rt>ひょうじ</rt></ruby>が<ruby>出<rt>で</rt></ruby>た</td>
+          </tr>
+          <tr>
+            <td>&#9744;</td>
+            <td>「ファイル」→「.ipynb をダウンロード」でファイルを<ruby>保存<rt>ほぞん</rt></ruby>した</td>
+          </tr>
+          <tr>
+            <td>&#9744;</td>
+            <td>ファイル<ruby>名<rt>めい</rt></ruby>を <strong style="color:var(--accent);">Web-<ruby>学籍番号<rt>がくせきばんごう</rt></ruby>.ipynb</strong> に<ruby>変更<rt>へんこう</rt></ruby>した</td>
+          </tr>
+          <tr>
+            <td>&#9744;</td>
+            <td>Gmail で<ruby>件名<rt>けんめい</rt></ruby>：<strong>Web<ruby>回答<rt>かいとう</rt></ruby></strong> として <strong>y.mizuhiki@noutatsu.ac.jp</strong> へファイルを<ruby>提出<rt>ていしゅつ</rt></ruby>した</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+  </div>
+
+  <!-- ===== コピー用のプレーンテキスト ===== -->
+  <textarea id="cell1-code" style="display:none;">from IPython.display import display, HTML
+
+# HTML と CSS を文字列で書く
+sample_html = """
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    .sample-box {
+      background-color: #1DB954;
+      color: white;
+      padding: 30px;
+      text-align: center;
+      border-radius: 12px;
+      font-family: Arial, sans-serif;
+    }
+    .sample-box h1 {
+      font-size: 28px;
+    }
+    .sample-box p {
+      font-size: 16px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="sample-box">
+    <h1>Hello, Colab!</h1>
+    <p>IPython.display を使うと HTML を表示できます</p>
+  </div>
+</body>
+</html>
+"""
+
+# HTML を表示する
+display(HTML(sample_html))</textarea>
+
+  <textarea id="cell2-code" style="display:none;">from IPython.display import display, HTML
+
+music_html = """
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    body {
+      margin: 0;
+      (1): url("(2)");
+      background-size: cover;
+      background-repeat: no-repeat;
+      color: (3);
+      font-family: Arial, sans-serif;
+    }
+    .navbar {
+      background-color: (4)(0,0,0,0.7);
+      padding: 15px 30px;
+    }
+    .logo {
+      color: #1DB954;
+      font-size: 24px;
+      font-weight: (5);
+    }
+    .navbar a {
+      color: white;
+      text-decoration: none;
+      margin-left: 20px;
+    }
+    .main-content {
+      text-align: (6);
+      padding: 100px 20px;
+    }
+    h1 {
+      font-size: 48px;
+      margin-bottom: 20px;
+    }
+    p {
+      font-size: 20px;
+      margin-bottom: 30px;
+    }
+    button {
+      background-color: #1DB954;
+      color: white;
+      border: (7);
+      border-radius: (8);
+      padding: 15px 40px;
+      font-size: 16px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="navbar">
+    <span class="logo">MusicStream</span>
+    <(9) href="#">Home</(9)>
+    <a href="#">Premium</a>
+  </div>
+  <div class="main-content">
+    <h1>Music for everyone.</h1>
+    <(10)>Millions of songs. No credit card needed.</(10)>
+    <button>Get Started</button>
+  </div>
+</body>
+</html>
+"""
+
+# HTML を表示する
+display(HTML(music_html))</textarea>
+
+  <script>
+    function copyCode(btn) {
+      var targetId = btn.getAttribute('data-target');
+      var text = document.getElementById(targetId).value;
+
+      navigator.clipboard.writeText(text).then(function() {
+        btn.innerHTML = '&#10003; Copied!';
+        btn.classList.add('copied');
+        setTimeout(function() {
+          btn.innerHTML = '&#128203; Copy';
+          btn.classList.remove('copied');
+        }, 2000);
+      });
+    }
+  </script>
+
+</body>
+</html>
