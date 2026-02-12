@@ -534,8 +534,7 @@
       </h2>
       <p>
         Google Colab で <strong>「Music Stream」</strong> の Web ページを <code>IPython.display</code> の <code>HTML</code> を<ruby>使<rt>つか</rt></ruby>って<ruby>表示<rt>ひょうじ</rt></ruby>させます。<br>
-        まず<strong>サンプルコード</strong>を<ruby>実行<rt>じっこう</rt></ruby>して <code>IPython.display</code> の<ruby>使<rt>つか</rt></ruby>い<ruby>方<rt>かた</rt></ruby>を<ruby>確認<rt>かくにん</rt></ruby>し、
-        その<ruby>後<rt>あと</rt></ruby>、コードの
+        コードの
         <span class="blank">(1)</span> ～ <span class="blank">(10)</span>
         に<ruby>入<rt>はい</rt></ruby>る<ruby>正<rt>ただ</rt></ruby>しい<ruby>言葉<rt>ことば</rt></ruby>を<ruby>書<rt>か</rt></ruby>いて、プログラムを<ruby>完成<rt>かんせい</rt></ruby>させてください。
       </p>
@@ -552,10 +551,7 @@
           Google Colab（<a href="https://colab.research.google.com/" target="_blank" style="color: var(--colab-blue);">colab.research.google.com</a>）を<ruby>開<rt>ひら</rt></ruby>き、<strong>「ノートブックを<ruby>新規作成<rt>しんきさくせい</rt></ruby>」</strong>をクリックする
         </li>
         <li>
-          <strong>セル 1</strong> に「<ruby>手順<rt>てじゅん</rt></ruby> 3 ── サンプルコード」をコピーして<ruby>実行<rt>じっこう</rt></ruby>し、<code>IPython.display</code> の<ruby>使<rt>つか</rt></ruby>い<ruby>方<rt>かた</rt></ruby>を<ruby>確認<rt>かくにん</rt></ruby>する
-        </li>
-        <li>
-          <strong>セル 2</strong>（<ruby>新<rt>あたら</rt></ruby>しいセルを<ruby>追加<rt>ついか</rt></ruby>）に「<ruby>手順<rt>てじゅん</rt></ruby> 5 ── <ruby>穴埋<rt>あなう</rt></ruby>めコード」をコピーし、<span class="blank">(1)</span>～<span class="blank">(10)</span> の<ruby>空欄<rt>くうらん</rt></ruby>を<ruby>埋<rt>う</rt></ruby>めて<ruby>実行<rt>じっこう</rt></ruby>する
+          <strong>セル 1</strong> に「<ruby>手順<rt>てじゅん</rt></ruby> 4 ── <ruby>穴埋<rt>あなう</rt></ruby>めコード」をコピーし、<span class="blank">(1)</span>～<span class="blank">(10)</span> の<ruby>空欄<rt>くうらん</rt></ruby>を<ruby>埋<rt>う</rt></ruby>めて<ruby>実行<rt>じっこう</rt></ruby>する
         </li>
         <li>
           <ruby>完成<rt>かんせい</rt></ruby>イメージと<ruby>同<rt>おな</rt></ruby>じ<ruby>表示<rt>ひょうじ</rt></ruby>になったら、メニューから<br>
@@ -576,79 +572,19 @@
       </div>
     </section>
 
-    <!-- ===== 3. サンプルコード ===== -->
+    <!-- ===== 3. 使用する画像URL ===== -->
     <section class="section">
       <h2>
         <span class="section-number">3</span>
-        サンプルコード（<ruby>手順<rt>てじゅん</rt></ruby> 2 で<ruby>使用<rt>しよう</rt></ruby>）
-      </h2>
-      <p style="margin-bottom: 12px;">
-        まず<ruby>下<rt>した</rt></ruby>のコードを <strong>セル 1</strong> にコピー &amp; ペーストして<ruby>実行<rt>じっこう</rt></ruby>してください。<br>
-        <code>IPython.display.HTML</code> を<ruby>使<rt>つか</rt></ruby>うと、Colab のセル<ruby>内<rt>ない</rt></ruby>で HTML/CSS を<ruby>表示<rt>ひょうじ</rt></ruby>できることを<ruby>確認<rt>かくにん</rt></ruby>します。
-      </p>
-
-      <div class="code-block">
-        <div class="code-header">
-          <span class="cell-badge"><span class="icon play">&#9654;</span> セル 1 ── サンプル</span>
-          <button class="copy-btn" data-target="cell1-code" onclick="copyCode(this)">&#128203; Copy</button>
-        </div>
-        <div class="code-body"><pre><span class="kw">from</span> IPython.display <span class="kw">import</span> display, HTML
-
-<span class="cm"># HTML と CSS を文字列で書く</span>
-sample_html = <span class="st">"""
-&lt;!DOCTYPE html&gt;
-&lt;html&gt;
-&lt;head&gt;
-  &lt;style&gt;
-    .sample-box {
-      background-color: #1DB954;
-      color: white;
-      padding: 30px;
-      text-align: center;
-      border-radius: 12px;
-      font-family: Arial, sans-serif;
-    }
-    .sample-box h1 {
-      font-size: 28px;
-    }
-    .sample-box p {
-      font-size: 16px;
-      margin-top: 10px;
-    }
-  &lt;/style&gt;
-&lt;/head&gt;
-&lt;body&gt;
-  &lt;div class="sample-box"&gt;
-    &lt;h1&gt;Hello, Colab!&lt;/h1&gt;
-    &lt;p&gt;IPython.display を使うと HTML を表示できます&lt;/p&gt;
-  &lt;/div&gt;
-&lt;/body&gt;
-&lt;/html&gt;
-"""</span>
-
-<span class="cm"># HTML を表示する</span>
-display(HTML(sample_html))</pre>
-        </div>
-      </div>
-
-      <div class="tip-box">
-        <strong>Tip：</strong><ruby>実行<rt>じっこう</rt></ruby>すると、セルの<ruby>下<rt>した</rt></ruby>に<ruby>緑<rt>みどり</rt></ruby>のボックスと「Hello, Colab!」が<ruby>表示<rt>ひょうじ</rt></ruby>されます。これが <code>IPython.display</code> の<ruby>基本<rt>きほん</rt></ruby>です。
-      </div>
-    </section>
-
-    <!-- ===== 4. 使用する画像URL ===== -->
-    <section class="section">
-      <h2>
-        <span class="section-number">4</span>
         <ruby>使用<rt>しよう</rt></ruby>する<ruby>画像<rt>がぞう</rt></ruby> URL
       </h2>
       <div class="url-box">https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=800</div>
     </section>
 
-    <!-- ===== 5. 問題 ===== -->
+    <!-- ===== 4. 問題 ===== -->
     <section class="section">
       <h2>
-        <span class="section-number">5</span>
+        <span class="section-number">4</span>
         <ruby>問題<rt>もんだい</rt></ruby>
       </h2>
       <table class="q-table">
@@ -703,14 +639,14 @@ display(HTML(sample_html))</pre>
       </table>
     </section>
 
-    <!-- ===== 6. 穴埋めコード ===== -->
+    <!-- ===== 5. 穴埋めコード ===== -->
     <section class="section">
       <h2>
-        <span class="section-number">6</span>
-        <ruby>穴埋<rt>あなう</rt></ruby>めコード（<ruby>手順<rt>てじゅん</rt></ruby> 3 で<ruby>使用<rt>しよう</rt></ruby>）
+        <span class="section-number">5</span>
+        <ruby>穴埋<rt>あなう</rt></ruby>めコード（<ruby>手順<rt>てじゅん</rt></ruby> 2 で<ruby>使用<rt>しよう</rt></ruby>）
       </h2>
       <p style="margin-bottom: 12px;">
-        <ruby>下<rt>した</rt></ruby>のコードを <strong>セル 2</strong> にコピー＆ペーストし、<span class="blank">(1)</span>～<span class="blank">(10)</span> の<ruby>空欄<rt>くうらん</rt></ruby>を<ruby>埋<rt>う</rt></ruby>めてから<ruby>実行<rt>じっこう</rt></ruby>してください。
+        <ruby>下<rt>した</rt></ruby>のコードを <strong>セル 1</strong> にコピー＆ペーストし、<span class="blank">(1)</span>～<span class="blank">(10)</span> の<ruby>空欄<rt>くうらん</rt></ruby>を<ruby>埋<rt>う</rt></ruby>めてから<ruby>実行<rt>じっこう</rt></ruby>してください。
       </p>
 
       <div class="warn-box">
@@ -719,7 +655,7 @@ display(HTML(sample_html))</pre>
 
       <div class="code-block">
         <div class="code-header">
-          <span class="cell-badge"><span class="icon play">&#9654;</span> セル 2 ── <ruby>穴埋<rt>あなう</rt></ruby>め</span>
+          <span class="cell-badge"><span class="icon play">&#9654;</span> セル 1 ── <ruby>穴埋<rt>あなう</rt></ruby>め</span>
           <button class="copy-btn" data-target="cell2-code" onclick="copyCode(this)">&#128203; Copy</button>
         </div>
         <div class="code-body"><pre><span class="kw">from</span> IPython.display <span class="kw">import</span> display, HTML
@@ -796,11 +732,11 @@ display(HTML(music_html))</pre>
       </div>
     </section>
 
-    <!-- ===== 7. 完成イメージ ===== -->
+    <!-- ===== 6. 完成イメージ ===== -->
     <section class="section">
       <h2 style="justify-content: space-between; flex-wrap: wrap;">
         <span style="display:inline-flex; align-items:center;">
-          <span class="section-number">7</span>
+          <span class="section-number">6</span>
           <ruby>完成<rt>かんせい</rt></ruby>イメージ
         </span>
         <a href="answer01.html" class="copy-btn" style="text-decoration:none; font-size:0.85rem; font-weight:600;">&#128209; 回答参照</a>
@@ -830,10 +766,10 @@ display(HTML(music_html))</pre>
       </div>
     </section>
 
-    <!-- ===== 8. 提出前チェック ===== -->
+    <!-- ===== 7. 提出前チェック ===== -->
     <section class="section">
       <h2>
-        <span class="section-number">8</span>
+        <span class="section-number">7</span>
         <ruby>提出前<rt>ていしゅつまえ</rt></ruby>チェックリスト
       </h2>
       <table class="q-table">
@@ -846,15 +782,11 @@ display(HTML(music_html))</pre>
         <tbody>
           <tr>
             <td>&#9744;</td>
-            <td>セル 1（サンプル）を<ruby>実行<rt>じっこう</rt></ruby>して、「Hello, Colab!」が<ruby>表示<rt>ひょうじ</rt></ruby>された</td>
+            <td>セル 1 の <span class="blank">(1)</span>～<span class="blank">(10)</span> をすべて<ruby>埋<rt>う</rt></ruby>めた</td>
           </tr>
           <tr>
             <td>&#9744;</td>
-            <td>セル 2 の <span class="blank">(1)</span>～<span class="blank">(10)</span> をすべて<ruby>埋<rt>う</rt></ruby>めた</td>
-          </tr>
-          <tr>
-            <td>&#9744;</td>
-            <td>セル 2 を<ruby>実行<rt>じっこう</rt></ruby>して、<ruby>完成<rt>かんせい</rt></ruby>イメージと<ruby>同<rt>おな</rt></ruby>じ<ruby>表示<rt>ひょうじ</rt></ruby>が<ruby>出<rt>で</rt></ruby>た</td>
+            <td>セル 1 を<ruby>実行<rt>じっこう</rt></ruby>して、<ruby>完成<rt>かんせい</rt></ruby>イメージと<ruby>同<rt>おな</rt></ruby>じ<ruby>表示<rt>ひょうじ</rt></ruby>が<ruby>出<rt>で</rt></ruby>た</td>
           </tr>
           <tr>
             <td>&#9744;</td>
@@ -875,43 +807,6 @@ display(HTML(music_html))</pre>
   </div>
 
   <!-- ===== コピー用のプレーンテキスト ===== -->
-  <textarea id="cell1-code" style="display:none;">from IPython.display import display, HTML
-
-# HTML と CSS を文字列で書く
-sample_html = """
-<!DOCTYPE html>
-<html>
-<head>
-  <style>
-    .sample-box {
-      background-color: #1DB954;
-      color: white;
-      padding: 30px;
-      text-align: center;
-      border-radius: 12px;
-      font-family: Arial, sans-serif;
-    }
-    .sample-box h1 {
-      font-size: 28px;
-    }
-    .sample-box p {
-      font-size: 16px;
-      margin-top: 10px;
-    }
-  </style>
-</head>
-<body>
-  <div class="sample-box">
-    <h1>Hello, Colab!</h1>
-    <p>IPython.display を使うと HTML を表示できます</p>
-  </div>
-</body>
-</html>
-"""
-
-# HTML を表示する
-display(HTML(sample_html))</textarea>
-
   <textarea id="cell2-code" style="display:none;">from IPython.display import display, HTML
 
 music_html = """
